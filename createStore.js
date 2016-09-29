@@ -1,3 +1,5 @@
+const INIT = "_INIT";
+
 export default function createStore(reducer, preloadedState, enhancer) {
   if (typeof preloadedState === 'function' && typeof enhancer === 'undefined') {
     enhancer = preloadedState
@@ -11,12 +13,11 @@ export default function createStore(reducer, preloadedState, enhancer) {
   let state = preloadedState;
   const listeners = [];
 
-  dispatch({ type: INIT });
-
-  return {
+  const store = {
 
     dispatch(action) {
-      currentState = reducer(currentState, action);
+      state = reducer(state, action);
+      listeners.forEach((listener) => listener());
       return action;
     },
 
@@ -29,8 +30,12 @@ export default function createStore(reducer, preloadedState, enhancer) {
     },
 
     getState() {
-      return currentState
+      return state;
     }
 
   }
+
+  store.dispatch({ type: INIT });
+
+  return store;
 }

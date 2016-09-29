@@ -1,9 +1,17 @@
-function connect(mapStateToProps, mapDispatchToProps) {
+import React from 'react';
+
+export default function connect(mapStateToProps, mapDispatchToProps) {
+  mapStateToProps = mapStateToProps || function () { return {} };
+  mapDispatchToProps = mapDispatchToProps || function () { return {} };
   return function (Component) {
-  	class Component extends React.Component {
+  	class ConnectedComponent extends React.Component {
     	constructor(props, context) {
       	super(props, context);
         this.state = this.getStateFromStore()
+      }
+
+      static contextTypes = {
+       store: React.PropTypes.object.isRequired
       }
 
       getStateFromStore() {
@@ -16,7 +24,7 @@ function connect(mapStateToProps, mapDispatchToProps) {
       }
 
       componentDidMount() {
-        this.context.store.register(this._onChange.bind(this));
+        this.context.store.subscribe(this._onChange.bind(this));
       }
 
       _onChange() {
@@ -31,10 +39,6 @@ function connect(mapStateToProps, mapDispatchToProps) {
       }
     }
 
-    Component.contextTypes = {
-      state: React.PropTypes.object.isRequired
-    }
-
-    return Component;
+    return ConnectedComponent;
   }
 }

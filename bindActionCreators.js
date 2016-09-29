@@ -3,7 +3,7 @@ export default function bindActionCreators(actionCreators, dispatch) {
 
   for (let key in actionCreators) {
     const actionCreator = actionCreators[key];
-    boundActionCreators[key] = (..args) => dispatch(actionCreator(...args));
+    boundActionCreators[key] = (...args) => dispatch(actionCreator(...args));
   }
 
   return boundActionCreators;

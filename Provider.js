@@ -1,4 +1,4 @@
-import { Component, PropTypes } from 'react';
+import React, { Component, PropTypes } from 'react';
 
 export default class Provider extends Component {
 
@@ -17,5 +17,9 @@ export default class Provider extends Component {
 }
 
 Provider.propTypes = {
+  store: PropTypes.object.isRequired
+}
+
+Provider.childContextTypes = {
   store: PropTypes.object.isRequired
 }
