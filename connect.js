@@ -1,12 +1,26 @@
 import React from 'react';
+import bindActionCreators from './bindActionCreators';
+
+const noop = () => ({});
 
 export default function connect(mapStateToProps, mapDispatchToProps) {
-  mapStateToProps = mapStateToProps || function () { return {} };
-  mapDispatchToProps = mapDispatchToProps || function () { return {} };
+
+  mapStateToProps = mapStateToProps || noop;
+  mapDispatchToProps = mapDispatchToProps || noop;
+
   return function (Component) {
-  	class ConnectedComponent extends React.Component {
+  	return class ConnectedComponent extends React.Component {
+
     	constructor(props, context) {
       	super(props, context);
+
+        if (typeof mapDispatchToProps === 'object') {
+          mapDispatchToProps = bindActionCreators(
+            mapDispatchToProps,
+            this.context.store.dispatch
+          );
+        }
+
         this.state = this.getStateFromStore()
       }
 
@@ -38,7 +52,5 @@ export default function connect(mapStateToProps, mapDispatchToProps) {
         return <Component {...this.state} />
       }
     }
-
-    return ConnectedComponent;
   }
 }
