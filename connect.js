@@ -15,7 +15,7 @@ export default function connect(mapStateToProps, mapDispatchToProps) {
       	super(props, context);
 
         if (typeof mapDispatchToProps === 'object') {
-          mapDispatchToProps = bindActionCreators(
+          mapDispatchToProps = () => bindActionCreators(
             mapDispatchToProps,
             this.context.store.dispatch
           );

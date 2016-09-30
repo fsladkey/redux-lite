@@ -1,5 +1,5 @@
 export default function applyMiddleware(...middlewares) {
-  return (createStore) => (reducer, preloadedState, enhancer) => {
+  return (createStore) => (reducer, preloadedState) => {
     const store = createStore(reducer, preloadedState);
     let { getState, dispatch } = store;
 
